@@ -41,10 +41,12 @@
        </tr>
     </table>
     </center>
+    <p id = "hi"></p>
+    <p id = "hi1"></p>
 </body>
 </html>
 <script>
-    function fun(b)
+   function fun(b)
     {
         document.getElementById("display").value+=b;
     }
@@ -102,8 +104,13 @@
                         {
                             values.push(0);
                         }
+                    if((a[i]=="+" || a[i]=="-"|| a[i]=="*" || a[i]=="/") && (a[i+1]=="*" || a[i+1]=="/" || a[i+1]=="+"))
+                        {
+                            return "Invalid statement";
+                        }
                     if(a[i]=="+" || a[i]=="-" || a[i]=="*" || a[i]=="/")
                     {
+                        
                         if(operators.length==0 || (precedence(operators[operators.length-1])<precedence(a[i])))
                         {
                             operators.push(a[i]);
@@ -133,7 +140,23 @@
                             operators.push(a[i]);
                         }
                     }
-                    else
+                   if((a[i]=="+" || a[i]=="-"|| a[i]=="*" || a[i]=="/") && (a[i+1]=="-"))
+                        {
+                            var ch="";
+                            var j;
+                            for(j=i+1;j<a.length;j++)
+                            {
+                                if(a[j+1]=="+" || a[j+1]=="-" || a[j+1]=="*" || a[j+1]=="/")
+                                {
+                                    ch+=a[j];
+                                    break;
+                                }
+                                ch+=a[j];
+                            }   
+                            values.push(parseFloat(ch));
+                            i+=ch.length;
+                        }
+                    else if(a[i]!="+" && a[i]!="-"&& a[i]!="*" ** a[i]!="/")
                     {
                         var ch="";
                         var j;
@@ -148,9 +171,9 @@
                         }   
                         values.push(parseFloat(ch));
                         i+=ch.length-1;
-                       
                     }
                 }
+            }
             while(operators.length!=0)
             {
                              var f, s;
@@ -174,7 +197,6 @@
                                  }
                             operators.pop();
             }
-        }
         return values;
     }
     function precedence(a)
